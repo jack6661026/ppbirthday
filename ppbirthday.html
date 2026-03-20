@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>生日蛋糕吹蜡烛</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background:
+                radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.12), transparent 20%),
+                radial-gradient(circle at 20% 10%, rgba(255, 170, 210, 0.12), transparent 20%),
+                linear-gradient(180deg, #24163f 0%, #3d1f63 48%, #5a2d7a 100%);
+            color: #fff;
+        }
+
+        .app {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.9) 1px, transparent 1.6px),
+                radial-gradient(circle, rgba(255, 255, 255, 0.65) 1px, transparent 1.6px),
+                radial-gradient(circle, rgba(255, 255, 255, 0.45) 1px, transparent 1.6px);
+            background-size: 160px 160px, 220px 220px, 280px 280px;
+            background-position: 12px 18px, 90px 120px, 35px 145px;
+            opacity: 0.9;
+            animation: starsFloat 9s ease-in-out infinite alternate;
+        }
+
+        @keyframes starsFloat {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-18px);
+            }
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 16px 24px;
+        }
+
+        .top {
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .title {
+            margin: 0 0 8px;
+            font-size: clamp(28px, 6vw, 42px);
+            font-weight: 800;
+            text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .subtitle {
+            margin: 0;
+            font-size: clamp(14px, 3.8vw, 18px);
+            opacity: 0.92;
+        }
+
+        .scene-wrap {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1400px;
+            position: relative;
+        }
+
+        .scene {
+            position: relative;
+            width: min(94vw, 460px);
+            height: min(94vw, 460px);
+            transform-style: preserve-3d;
+            transform: rotateX(10deg);
+            animation: floatCake 3.4s ease-in-out infinite;
+        }
+
+        @keyframes floatCake {
+
+            0%,
+            100% {
+                transform: rotateX(10deg) translateY(0px);
+            }
+
+            50% {
+                transform: rotateX(10deg) translateY(-10px);
+            }
+        }
+
+        .glow-shadow {
+            position: absolute;
+            left: 50%;
+            bottom: 42px;
+            transform: translateX(-50%);
+            width: 270px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 170, 210, 0.35) 0%, rgba(255, 150, 200, 0.12) 45%, transparent 72%);
+            filter: blur(12px);
+        }
+
+        .plate {
+            position: absolute;
+            left: 50%;
+            bottom: 50px;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 82px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 50% 30%, #ffffff 0%, #eef0ff 52%, #b8bddc 100%);
+            box-shadow:
+                0 22px 38px rgba(0, 0, 0, 0.35),
+                inset 0 -10px 16px rgba(0, 0, 0, 0.12),
+                inset 0 10px 12px rgba(255, 255, 255, 0.72);
+        }
+
+        .plate::before {
+            content: "";
+            position: absolute;
+            inset: 12px 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 35%, #fefefe 0%, #dfe3ff 100%);
+            opacity: 0.95;
+        }
+
+        .cake {
+            position: absolute;
+            left: 50%;
+            bottom: 96px;
+            transform: translateX(-50%);
+            width: 260px;
+            height: 210px;
+        }
+
+        .cake-click-area {
+            position: absolute;
+            inset: 0;
+            z-index: 40;
+            cursor: pointer;
+            border-radius: 24px;
+            background: transparent;
+        }
+
+        .cake-click-area.enabled {
+            animation: cakePulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes cakePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 rgba(255, 230, 120, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 28px rgba(255, 230, 120, 0.22);
+            }
+        }
+
+        .cake-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 255px;
+            height: 110px;
+            border-radius: 50% 50% 42% 42% / 28% 28% 18% 18%;
+            background:
+                linear-gradient(180deg, #ffd7e7 0%, #ffc2da 15%, #ffbad3 36%, #f5a6c4 68%, #db7fa5 100%);
+            box-shadow:
+                0 20px 32px rgba(0, 0, 0, 0.24),
+                inset 0 -12px 18px rgba(0, 0, 0, 0.12),
+                inset 0 8px 12px rgba(255, 255, 255, 0.45);
+        }
+
+        .cake-middle {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 190px;
+            height: 82px;
+            border-radius: 50% 50% 42% 42% / 30% 30% 18% 18%;
+            background:
+                linear-gradient(180deg, #fff2c8 0%, #ffe39d 15%, #ffd56c 45%, #f2b04e 100%);
+            box-shadow:
+                0 16px 24px rgba(0, 0, 0, 0.18),
+                inset 0 -10px 14px rgba(0, 0, 0, 0.10),
+                inset 0 8px 10px rgba(255, 255, 255, 0.34);
+            z-index: 2;
+        }
+
+        .top-cream {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: inset 0 -6px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .top-cream.bottom {
+            bottom: 88px;
+            width: 242px;
+            height: 48px;
+            background: radial-gradient(circle at 50% 35%, #fffefe 0%, #fff6fb 58%, #ffdce9 100%);
+        }
+
+        .top-cream.middle {
+            bottom: 129px;
+            width: 178px;
+            height: 40px;
+            background: radial-gradient(circle at 50% 35%, #fffefe 0%, #fff8fd 58%, #ffe6f0 100%);
+        }
+
+        .cream-drops {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            gap: 11px;
+            z-index: 4;
+        }
+
+        .cream-drops.bottom {
+            bottom: 60px;
+            width: 210px;
+        }
+
+        .cream-drops.middle {
+            bottom: 114px;
+            width: 150px;
+            gap: 9px;
+        }
+
+        .cream-drops span {
+            display: block;
+            width: 15px;
+            background: linear-gradient(180deg, #fffafc 0%, #ffd9e7 100%);
+            border-radius: 0 0 12px 12px;
+            box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .cream-drops span:nth-child(1) {
+            height: 28px;
+        }
+
+        .cream-drops span:nth-child(2) {
+            height: 20px;
+        }
+
+        .cream-drops span:nth-child(3) {
+            height: 33px;
+        }
+
+        .cream-drops span:nth-child(4) {
+            height: 24px;
+        }
+
+        .cream-drops span:nth-child(5) {
+            height: 30px;
+        }
+
+        .cream-drops span:nth-child(6) {
+            height: 18px;
+        }
+
+        .frosting-swirl {
+            position: absolute;
+            width: 28px;
+            height: 24px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 50% 38%, #ffffff 0%, #fff5fb 62%, #ffe3ef 100%);
+            box-shadow:
+                inset 0 -4px 6px rgba(0, 0, 0, 0.04),
+                0 4px 7px rgba(0, 0, 0, 0.08);
+            z-index: 6;
+        }
+
+        .frosting-swirl::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: -6px;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #fff1f8 100%);
+        }
+
+        .sw1 {
+            left: 26px;
+            bottom: 97px;
+        }
+
+        .sw2 {
+            left: 78px;
+            bottom: 104px;
+        }
+
+        .sw3 {
+            right: 78px;
+            bottom: 104px;
+        }
+
+        .sw4 {
+            right: 26px;
+            bottom: 97px;
+        }
+
+        .berry {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 35% 35%, #ffb2c2 0%, #ff4f7b 40%, #cc1848 100%);
+            box-shadow:
+                inset -2px -3px 4px rgba(0, 0, 0, 0.15),
+                0 3px 8px rgba(0, 0, 0, 0.15);
+            z-index: 7;
+        }
+
+        .berry::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: 4px;
+            width: 8px;
+            height: 6px;
+            background: #74c365;
+            border-radius: 50% 50% 0 50%;
+            transform: rotate(-18deg);
+        }
+
+        .b1 {
+            left: 52px;
+            bottom: 113px;
+        }
+
+        .b2 {
+            left: 112px;
+            bottom: 122px;
+        }
+
+        .b3 {
+            right: 112px;
+            bottom: 122px;
+        }
+
+        .b4 {
+            right: 52px;
+            bottom: 113px;
+        }
+
+        .gold-beads {
+            position: absolute;
+            left: 50%;
+            bottom: 84px;
+            transform: translateX(-50%);
+            width: 210px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 8;
+        }
+
+        .gold-beads span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #fff1a5 0%, #f7c84e 55%, #c8921d 100%);
+            box-shadow: 0 0 6px rgba(255, 210, 80, 0.4);
+        }
+
+        .candle-row {
+            position: absolute;
+            left: 50%;
+            bottom: 142px;
+            transform: translateX(-50%);
+            width: 122px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 12;
+        }
+
+        .candle {
+            position: relative;
+            width: 14px;
+            height: 56px;
+            border-radius: 8px;
+            background:
+                repeating-linear-gradient(45deg,
+                    #ffffff 0 7px,
+                    #ff6a96 7px 14px);
+            box-shadow:
+                0 6px 12px rgba(0, 0, 0, 0.18),
+                inset -2px -4px 5px rgba(0, 0, 0, 0.10),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.4);
+        }
+
+        .wick {
+            position: absolute;
+            left: 50%;
+            top: -9px;
+            width: 2px;
+            height: 11px;
+            transform: translateX(-50%);
+            background: #3a2b1d;
+            border-radius: 2px;
+            z-index: 2;
+        }
+
+        .flame {
+            position: absolute;
+            left: 50%;
+            top: -32px;
+            width: 20px;
+            height: 30px;
+            transform: translateX(-50%);
+            border-radius: 50% 50% 50% 50% / 68% 68% 35% 35%;
+            background:
+                radial-gradient(circle at 50% 68%, #fff7b2 0%, #ffd54f 34%, #ff9723 68%, rgba(255, 120, 0, 0.18) 100%);
+            box-shadow:
+                0 0 12px rgba(255, 205, 90, 0.95),
+                0 0 24px rgba(255, 155, 40, 0.7),
+                0 0 44px rgba(255, 120, 30, 0.38);
+            animation: flicker 0.14s infinite alternate;
+            transform-origin: center bottom;
+            z-index: 3;
+        }
+
+        .flame::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 4px;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            filter: blur(1px);
+        }
+
+        @keyframes flicker {
+            from {
+                transform: translateX(-50%) scale(1) rotate(-2deg);
+                opacity: 0.95;
+            }
+
+            to {
+                transform: translateX(-50%) scale(1.08, 0.94) rotate(2deg);
+                opacity: 1;
+            }
+        }
+
+        .smoke {
+            position: absolute;
+            left: 50%;
+            top: -31px;
+            width: 15px;
+            height: 15px;
+            transform: translateX(-50%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .smoke::before,
+        .smoke::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(238, 238, 238, 0.88) 0%, rgba(198, 198, 198, 0.22) 68%, transparent 100%);
+        }
+
+        .smoke::before {
+            width: 18px;
+            height: 18px;
+            left: -2px;
+            top: 0;
+        }
+
+        .smoke::after {
+            width: 24px;
+            height: 24px;
+            left: 4px;
+            top: -8px;
+        }
+
+        .spark {
+            position: absolute;
+            left: 50%;
+            top: -28px;
+            transform: translateX(-50%);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 235, 140, 0.8) 0%, rgba(255, 180, 60, 0.12) 55%, transparent 75%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .candle.out .flame {
+            display: none;
+        }
+
+        .candle.out .smoke {
+            animation: smokeRise 1.8s ease-out forwards;
+        }
+
+        .candle.relighting .spark {
+            animation: relightFlash 0.9s ease-out;
+        }
+
+        .candle.relighting .flame {
+            animation:
+                relightGrow 1s ease-out,
+                flicker 0.14s infinite alternate 1s;
+            transform-origin: center bottom;
+        }
+
+        @keyframes smokeRise {
+            0% {
+                opacity: 0.75;
+                transform: translateX(-50%) translateY(0) scale(0.85);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-44px) scale(1.9);
+            }
+        }
+
+        @keyframes relightFlash {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0.2);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) scale(1.8);
+            }
+        }
+
+        @keyframes relightGrow {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0.15);
+            }
+
+            35% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.18);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        .message {
+            position: absolute;
+            left: 50%;
+            top: 28px;
+            transform: translateX(-50%) translateY(-10px);
+            width: 92%;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.8s ease;
+            z-index: 20;
+        }
+
+        .message.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .message h2 {
+            margin: 0 0 8px;
+            font-size: clamp(30px, 7vw, 48px);
+            color: #fff7b0;
+            text-shadow:
+                0 0 12px rgba(255, 230, 110, 0.52),
+                0 0 28px rgba(255, 185, 70, 0.28);
+        }
+
+        .message p {
+            margin: 0;
+            font-size: clamp(14px, 4vw, 20px);
+            color: rgba(255, 255, 255, 0.96);
+        }
+
+        .controls {
+            width: min(94vw, 440px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-row {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            outline: none;
+            border-radius: 16px;
+            padding: 14px 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .primary {
+            background: linear-gradient(135deg, #ff6a96, #ffb14f);
+            color: white;
+        }
+
+        .secondary {
+            background: rgba(255, 255, 255, 0.14);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(6px);
+        }
+
+        .status {
+            width: 100%;
+            min-height: 54px;
+            text-align: center;
+            padding: 10px 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(6px);
+            font-size: 14px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.97);
+        }
+
+        .meter-wrap {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            overflow: hidden;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.16);
+        }
+
+        .meter {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #72e5ff, #ffd45a, #ff739f);
+            transition: width 0.08s linear;
+        }
+
+        .hint {
+            font-size: 12px;
+            opacity: 0.82;
+            text-align: center;
+            margin-top: -2px;
+        }
+
+        .confetti {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 19;
+        }
+
+        .confetti span {
+            position: absolute;
+            top: -20px;
+            width: 10px;
+            height: 16px;
+            opacity: 0;
+            animation: fall 3.2s linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(520deg);
+                opacity: 0.95;
+            }
+        }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 10, 35, 0.55);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+            padding: 20px;
+        }
+
+        .card-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .card {
+            width: min(92vw, 420px);
+            background:
+                linear-gradient(180deg, #fffaf4 0%, #fff2f8 100%);
+            color: #7b3551;
+            border-radius: 26px;
+            padding: 26px 22px 20px;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transform: translateY(18px) scale(0.96);
+            transition: transform 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-overlay.show .card {
+            transform: translateY(0) scale(1);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top right, rgba(255, 184, 206, 0.45), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(255, 222, 151, 0.35), transparent 28%);
+            pointer-events: none;
+        }
+
+        .card h3 {
+            position: relative;
+            margin: 0 0 14px;
+            text-align: center;
+            font-size: 28px;
+            color: #c44d7c;
+        }
+
+        .card-lines {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card-lines p {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #7a4460;
+            font-weight: 600;
+        }
+
+        .card-close {
+            position: relative;
+            width: 100%;
+            border-radius: 14px;
+            padding: 13px 16px;
+            background: linear-gradient(135deg, #ff83a8, #ffbc72);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            box-shadow: 0 10px 20px rgba(196, 77, 124, 0.22);
+        }
+
+        @media (max-width: 420px) {
+            .cake {
+                transform: translateX(-50%) scale(0.93);
+                transform-origin: center bottom;
+            }
+
+            .plate {
+                transform: translateX(-50%) scale(0.94);
+            }
+
+            .card-lines p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="stars"></div>
+        <div class="confetti" id="confetti"></div>
+
+        <div class="card-overlay" id="cardOverlay">
+            <div class="card">
+                <h3>To o泡生日贺卡💌</h3>
+                <div class="card-lines">
+                    <p>来自04的生日小惊喜😘</p>
+                    <p>没想到还有贺卡吧😎</p>
+                    <p>阳历的在忙就农历补上了</p>
+                    <p>这是第一年陪你过生日，接下来还有第二年...</p>
+                    <p>摊上我你就偷着乐吧😉</p>
+                    <p>祝你生日快乐，永远闪闪发光 ✨</p>
+                </div>
+                <button class="card-close" id="closeCardBtn">关闭贺卡</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="top">
+                <h1 class="title">生日快乐 o泡🎂</h1>
+                <p class="subtitle">点开始后，对着手机吹气，把蜡烛吹灭吧</p>
+            </div>
+
+            <div class="scene-wrap">
+                <div class="message" id="message">
+                    <h2>Happy Birthday!</h2>
+                    <p id="messageText">点击蛋糕，打开你的生日贺卡 💌</p>
+                </div>
+
+                <div class="scene">
+                    <div class="glow-shadow"></div>
+                    <div class="plate"></div>
+
+                    <div class="cake" id="cake">
+                        <div class="cake-click-area" id="cakeClickArea"></div>
+
+                        <div class="cake-bottom"></div>
+                        <div class="top-cream bottom"></div>
+                        <div class="cream-drops bottom">
+                            <span></span><span></span><span></span><span></span><span></span><span></span>
+                        </div>
+
+                        <div class="cake-middle"></div>
+                        <div class="top-cream middle"></div>
+                        <div class="cream-drops middle">
+                            <span></span><span></span><span></span><span></span><span></span>
+                        </div>
+
+                        <div class="frosting-swirl sw1"></div>
+                        <div class="frosting-swirl sw2"></div>
+                        <div class="frosting-swirl sw3"></div>
+                        <div class="frosting-swirl sw4"></div>
+
+                        <div class="berry b1"></div>
+                        <div class="berry b2"></div>
+                        <div class="berry b3"></div>
+                        <div class="berry b4"></div>
+
+                        <div class="gold-beads">
+                            <span></span><span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span><span></span>
+                        </div>
+
+                        <div class="candle-row" id="candles">
+                            <div class="candle">
+                                <div class="wick"></div>
+                                <div class="spark"></div>
+                                <div class="flame"></div>
+                                <div class="smoke"></div>
+                            </div>
+                            <div class="candle">
+                                <div class="wick"></div>
+                                <div class="spark"></div>
+                                <div class="flame"></div>
+                                <div class="smoke"></div>
+                            </div>
+                            <div class="candle">
+                                <div class="wick"></div>
+                                <div class="spark"></div>
+                                <div class="flame"></div>
+                                <div class="smoke"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="btn-row">
+                    <button class="primary" id="startBtn">开始麦克风</button>
+                    <button class="secondary" id="resetBtn">重新点蜡烛</button>
+                </div>
+
+                <div class="meter-wrap">
+                    <div class="meter" id="meter"></div>
+                </div>
+
+                <div class="status" id="status">
+                    先点击“开始麦克风”，允许权限后，再对手机吹气。
+                </div>
+
+                <div class="hint">吹灭蜡烛后，点击蛋糕就会弹出贺卡；重新点燃并再吹灭后也能再次打开。</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById("startBtn");
+        const resetBtn = document.getElementById("resetBtn");
+        const statusEl = document.getElementById("status");
+        const meterEl = document.getElementById("meter");
+        const candles = [...document.querySelectorAll(".candle")];
+        const messageEl = document.getElementById("message");
+        const messageTextEl = document.getElementById("messageText");
+        const confettiEl = document.getElementById("confetti");
+        const cakeClickArea = document.getElementById("cakeClickArea");
+        const cardOverlay = document.getElementById("cardOverlay");
+        const closeCardBtn = document.getElementById("closeCardBtn");
+
+        let audioContext = null;
+        let analyser = null;
+        let micSource = null;
+        let mediaStream = null;
+        let dataArray = null;
+        let listening = false;
+        let blownOut = false;
+        let canBlow = true;
+        let cardUnlocked = false;
+        let rafId = null;
+
+        function setStatus(text) {
+            statusEl.textContent = text;
+        }
+
+        function updateCakeCardHint() {
+            if (cardUnlocked) {
+                cakeClickArea.classList.add("enabled");
+            } else {
+                cakeClickArea.classList.remove("enabled");
+            }
+        }
+
+        function openCard() {
+            if (!cardUnlocked) return;
+            cardOverlay.classList.add("show");
+            setStatus("这是送给你的生日贺卡，读完后可以关闭。");
+        }
+
+        function closeCard() {
+            cardOverlay.classList.remove("show");
+            if (cardUnlocked) {
+                setStatus("你可以继续点蛋糕再次查看贺卡，或者重新点燃蜡烛再吹一次。");
+            }
+        }
+
+        function makeConfetti() {
+            confettiEl.innerHTML = "";
+            const colors = ["#ff6a96", "#ffd166", "#7dd3fc", "#86efac", "#c4b5fd", "#ffffff", "#fb7185"];
+
+            for (let i = 0; i < 32; i++) {
+                const piece = document.createElement("span");
+                piece.style.left = Math.random() * 100 + "vw";
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = (Math.random() * 0.8) + "s";
+                piece.style.animationDuration = (2.6 + Math.random() * 1.6) + "s";
+                piece.style.transform = `rotate(${Math.random() * 180}deg)`;
+                piece.style.borderRadius = Math.random() > 0.5 ? "3px" : "50%";
+                confettiEl.appendChild(piece);
+            }
+
+            setTimeout(() => {
+                confettiEl.innerHTML = "";
+            }, 5000);
+        }
+
+        async function initAudio() {
+            if (!audioContext) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioCtx();
+            }
+            if (audioContext.state === "suspended") {
+                await audioContext.resume();
+            }
+        }
+
+        async function startMic() {
+            try {
+                await initAudio();
+
+                if (mediaStream) {
+                    stopMic();
+                }
+
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    }
+                });
+
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 512;
+                analyser.smoothingTimeConstant = 0.75;
+                dataArray = new Uint8Array(analyser.fftSize);
+
+                micSource = audioContext.createMediaStreamSource(mediaStream);
+                micSource.connect(analyser);
+
+                listening = true;
+                setStatus("正在监听吹气… 请对着手机底部麦克风吹一口气。");
+                detectBlow();
+            } catch (err) {
+                console.error(err);
+                setStatus("无法开启麦克风。请检查浏览器权限，或改用 Chrome / Safari 手机浏览器。");
+            }
+        }
+
+        function stopMic() {
+            listening = false;
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = null;
+
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+
+            if (micSource) {
+                try { micSource.disconnect(); } catch { }
+                micSource = null;
+            }
+
+            analyser = null;
+            dataArray = null;
+            meterEl.style.width = "0%";
+        }
+
+        function extinguishCandles() {
+            if (blownOut || !canBlow) return;
+
+            blownOut = true;
+            canBlow = false;
+            cardUnlocked = true;
+            updateCakeCardHint();
+
+            candles.forEach((c, index) => {
+                setTimeout(() => {
+                    c.classList.add("out");
+                    c.classList.remove("relighting");
+                }, index * 120);
+            });
+
+            setTimeout(() => {
+                messageTextEl.textContent = "点击蛋糕，打开你的生日贺卡 💌";
+                messageEl.classList.add("show");
+                makeConfetti();
+                playHappyBirthdaySong();
+            }, 350);
+
+            setStatus("成功吹灭蜡烛！点击蛋糕可以打开贺卡。");
+        }
+
+        function relightCandles() {
+            blownOut = false;
+            canBlow = false;
+            cardUnlocked = false;
+            updateCakeCardHint();
+            messageEl.classList.remove("show");
+            cardOverlay.classList.remove("show");
+            meterEl.style.width = "0%";
+
+            candles.forEach((c, index) => {
+                c.classList.remove("out");
+                c.classList.remove("relighting");
+
+                setTimeout(() => {
+                    c.classList.add("relighting");
+                }, index * 180);
+            });
+
+            setStatus("蜡烛正在重新点燃中，请先等待火焰稳定…");
+
+            setTimeout(() => {
+                candles.forEach(c => c.classList.remove("relighting"));
+                canBlow = true;
+                setStatus("蜡烛已经重新燃烧，可以再次吹灭了。");
+            }, 2200);
+        }
+
+        function detectBlow() {
+            if (!listening || !analyser || !dataArray) return;
+
+            analyser.getByteTimeDomainData(dataArray);
+
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                const normalized = (dataArray[i] - 128) / 128;
+                sum += normalized * normalized;
+            }
+
+            const rms = Math.sqrt(sum / dataArray.length);
+            const level = Math.min(1, rms * 10);
+            meterEl.style.width = (level * 100).toFixed(0) + "%";
+
+            if (!blownOut && canBlow && level > 0.22) {
+                extinguishCandles();
+            }
+
+            rafId = requestAnimationFrame(detectBlow);
+        }
+
+        function playTone(freq, duration, startTime, gainValue = 0.05) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            gain.gain.setValueAtTime(0.0001, startTime);
+            gain.gain.exponentialRampToValueAtTime(gainValue, startTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration - 0.03);
+
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        }
+
+        async function playHappyBirthdaySong() {
+            await initAudio();
+
+            const notes = {
+                G4: 392.00,
+                A4: 440.00,
+                B4: 493.88,
+                C5: 523.25,
+                D5: 587.33,
+                E5: 659.25,
+                F5: 698.46,
+                G5: 783.99
+            };
+
+            const melody = [
+                ["G4", 0.36], ["G4", 0.18], ["A4", 0.55], ["G4", 0.55], ["C5", 0.55], ["B4", 0.9],
+                ["G4", 0.36], ["G4", 0.18], ["A4", 0.55], ["G4", 0.55], ["D5", 0.55], ["C5", 0.9],
+                ["G4", 0.36], ["G4", 0.18], ["G5", 0.55], ["E5", 0.55], ["C5", 0.55], ["B4", 0.55], ["A4", 0.9],
+                ["F5", 0.36], ["F5", 0.18], ["E5", 0.55], ["C5", 0.55], ["D5", 0.55], ["C5", 1.0]
+            ];
+
+            let t = audioContext.currentTime + 0.06;
+            for (const [note, dur] of melody) {
+                playTone(notes[note], dur, t, 0.045);
+                t += dur;
+            }
+        }
+
+        startBtn.addEventListener("click", async () => {
+            await startMic();
+        });
+
+        resetBtn.addEventListener("click", () => {
+            relightCandles();
+        });
+
+        cakeClickArea.addEventListener("click", () => {
+            if (cardUnlocked) {
+                openCard();
+            } else {
+                setStatus("先吹灭蜡烛，蛋糕才会弹出贺卡哦。");
+            }
+        });
+
+        closeCardBtn.addEventListener("click", () => {
+            closeCard();
+        });
+
+        cardOverlay.addEventListener("click", (e) => {
+            if (e.target === cardOverlay) {
+                closeCard();
+            }
+        });
+
+        window.addEventListener("beforeunload", () => {
+            stopMic();
+            if (audioContext && audioContext.state !== "closed") {
+                audioContext.close();
+            }
+        });
+
+        relightCandles();
+        updateCakeCardHint();
+    </script>
+</body>
+
+</html>
