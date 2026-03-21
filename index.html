@@ -20,9 +20,8 @@
             overflow: hidden;
             font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
             background:
-                radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.12), transparent 20%),
-                radial-gradient(circle at 20% 10%, rgba(255, 170, 210, 0.12), transparent 20%),
-                linear-gradient(180deg, #24163f 0%, #3d1f63 48%, #5a2d7a 100%);
+                radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.12), transparent 22%),
+                linear-gradient(180deg, #21143c 0%, #3d2161 45%, #5a2f79 100%);
             color: #fff;
         }
 
@@ -38,11 +37,11 @@
             inset: 0;
             pointer-events: none;
             background-image:
-                radial-gradient(circle, rgba(255, 255, 255, 0.9) 1px, transparent 1.6px),
+                radial-gradient(circle, rgba(255, 255, 255, 0.95) 1px, transparent 1.6px),
                 radial-gradient(circle, rgba(255, 255, 255, 0.65) 1px, transparent 1.6px),
-                radial-gradient(circle, rgba(255, 255, 255, 0.45) 1px, transparent 1.6px);
-            background-size: 160px 160px, 220px 220px, 280px 280px;
-            background-position: 12px 18px, 90px 120px, 35px 145px;
+                radial-gradient(circle, rgba(255, 255, 255, 0.4) 1px, transparent 1.6px);
+            background-size: 150px 150px, 210px 210px, 270px 270px;
+            background-position: 10px 15px, 80px 110px, 35px 135px;
             opacity: 0.9;
             animation: starsFloat 9s ease-in-out infinite alternate;
         }
@@ -53,7 +52,7 @@
             }
 
             to {
-                transform: translateY(-18px);
+                transform: translateY(-16px);
             }
         }
 
@@ -93,7 +92,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 1400px;
             position: relative;
         }
 
@@ -101,73 +99,80 @@
             position: relative;
             width: min(94vw, 460px);
             height: min(94vw, 460px);
-            transform-style: preserve-3d;
-            transform: rotateX(10deg);
-            animation: floatCake 3.4s ease-in-out infinite;
+            animation: floatScene 3.4s ease-in-out infinite;
         }
 
-        @keyframes floatCake {
+        @keyframes floatScene {
 
             0%,
             100% {
-                transform: rotateX(10deg) translateY(0px);
+                transform: translateY(0px);
             }
 
             50% {
-                transform: rotateX(10deg) translateY(-10px);
+                transform: translateY(-10px);
             }
         }
 
-        .glow-shadow {
+        .message {
             position: absolute;
             left: 50%;
-            bottom: 42px;
-            transform: translateX(-50%);
-            width: 270px;
-            height: 60px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 170, 210, 0.35) 0%, rgba(255, 150, 200, 0.12) 45%, transparent 72%);
-            filter: blur(12px);
+            top: 28px;
+            transform: translateX(-50%) translateY(-10px);
+            width: 92%;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.8s ease;
+            z-index: 40;
         }
 
-        .plate {
+        .message.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .message h2 {
+            margin: 0 0 8px;
+            font-size: clamp(30px, 7vw, 48px);
+            color: #fff7b0;
+            text-shadow:
+                0 0 12px rgba(255, 230, 110, 0.52),
+                0 0 28px rgba(255, 185, 70, 0.28);
+        }
+
+        .message p {
+            margin: 0;
+            font-size: clamp(14px, 4vw, 20px);
+            color: rgba(255, 255, 255, 0.96);
+        }
+
+        .table-shadow {
             position: absolute;
             left: 50%;
-            bottom: 50px;
+            bottom: 70px;
             transform: translateX(-50%);
-            width: 320px;
-            height: 82px;
+            width: 280px;
+            height: 34px;
             border-radius: 50%;
-            background:
-                radial-gradient(circle at 50% 30%, #ffffff 0%, #eef0ff 52%, #b8bddc 100%);
-            box-shadow:
-                0 22px 38px rgba(0, 0, 0, 0.35),
-                inset 0 -10px 16px rgba(0, 0, 0, 0.12),
-                inset 0 10px 12px rgba(255, 255, 255, 0.72);
-        }
-
-        .plate::before {
-            content: "";
-            position: absolute;
-            inset: 12px 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 50% 35%, #fefefe 0%, #dfe3ff 100%);
-            opacity: 0.95;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.12) 45%, transparent 72%);
+            filter: blur(10px);
         }
 
         .cake {
             position: absolute;
             left: 50%;
-            bottom: 96px;
+            bottom: 90px;
             transform: translateX(-50%);
-            width: 260px;
-            height: 210px;
+            width: 290px;
+            height: 220px;
+            z-index: 10;
         }
 
         .cake-click-area {
             position: absolute;
             inset: 0;
-            z-index: 40;
+            z-index: 50;
             cursor: pointer;
             border-radius: 24px;
             background: transparent;
@@ -185,174 +190,176 @@
             }
 
             50% {
-                box-shadow: 0 0 28px rgba(255, 230, 120, 0.22);
+                box-shadow: 0 0 28px rgba(255, 230, 120, 0.18);
             }
         }
 
-        .cake-bottom {
+        /* 2D cake */
+        .plate {
             position: absolute;
-            bottom: 0;
             left: 50%;
+            bottom: 0;
             transform: translateX(-50%);
-            width: 255px;
-            height: 110px;
-            border-radius: 50% 50% 42% 42% / 28% 28% 18% 18%;
-            background:
-                linear-gradient(180deg, #ffd7e7 0%, #ffc2da 15%, #ffbad3 36%, #f5a6c4 68%, #db7fa5 100%);
+            width: 290px;
+            height: 30px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #fefefe 0%, #e4e8ff 100%);
             box-shadow:
-                0 20px 32px rgba(0, 0, 0, 0.24),
-                inset 0 -12px 18px rgba(0, 0, 0, 0.12),
-                inset 0 8px 12px rgba(255, 255, 255, 0.45);
+                0 10px 20px rgba(0, 0, 0, 0.18),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.08);
         }
 
-        .cake-middle {
+        .plate::after {
+            content: "";
             position: absolute;
-            bottom: 60px;
+            left: 20px;
+            right: 20px;
+            top: 7px;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .cake-base {
+            position: absolute;
             left: 50%;
+            bottom: 24px;
             transform: translateX(-50%);
-            width: 190px;
-            height: 82px;
-            border-radius: 50% 50% 42% 42% / 30% 30% 18% 18%;
-            background:
-                linear-gradient(180deg, #fff2c8 0%, #ffe39d 15%, #ffd56c 45%, #f2b04e 100%);
+            width: 240px;
+            height: 110px;
+            border-radius: 18px 18px 26px 26px;
+            background: linear-gradient(180deg, #ffc7db 0%, #f3a6c3 55%, #d87ea4 100%);
             box-shadow:
                 0 16px 24px rgba(0, 0, 0, 0.18),
-                inset 0 -10px 14px rgba(0, 0, 0, 0.10),
-                inset 0 8px 10px rgba(255, 255, 255, 0.34);
+                inset 0 -8px 12px rgba(0, 0, 0, 0.08),
+                inset 0 6px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .cake-base::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 14px;
+            height: 18px;
+            background:
+                radial-gradient(circle at 10px 18px, #fff6fb 10px, transparent 11px) repeat-x;
+            background-size: 30px 18px;
+            background-position: 2px 0;
+            opacity: 0.95;
+        }
+
+        .cake-base::after {
+            content: "";
+            position: absolute;
+            left: 14px;
+            right: 14px;
+            bottom: 16px;
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .cake-top {
+            position: absolute;
+            left: 50%;
+            bottom: 118px;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 46px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #fffefe 0%, #fff3fa 60%, #ffddea 100%);
+            box-shadow:
+                0 8px 16px rgba(0, 0, 0, 0.12),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.05);
             z-index: 2;
         }
 
-        .top-cream {
+        .cream-wave {
+            position: absolute;
+            left: 50%;
+            bottom: 107px;
+            transform: translateX(-50%);
+            width: 228px;
+            height: 24px;
+            background:
+                radial-gradient(circle at 12px 0, #fff8fc 14px, transparent 15px) repeat-x;
+            background-size: 30px 24px;
+            z-index: 3;
+        }
+
+        .decor-line {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            border-radius: 50%;
-            z-index: 5;
-            box-shadow: inset 0 -6px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .top-cream.bottom {
-            bottom: 88px;
-            width: 242px;
-            height: 48px;
-            background: radial-gradient(circle at 50% 35%, #fffefe 0%, #fff6fb 58%, #ffdce9 100%);
-        }
-
-        .top-cream.middle {
-            bottom: 129px;
-            width: 178px;
-            height: 40px;
-            background: radial-gradient(circle at 50% 35%, #fffefe 0%, #fff8fd 58%, #ffe6f0 100%);
-        }
-
-        .cream-drops {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            justify-content: center;
-            gap: 11px;
+            width: 188px;
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #ffd166, #ff8eb4, #ffd166);
+            opacity: 0.8;
             z-index: 4;
         }
 
-        .cream-drops.bottom {
-            bottom: 60px;
-            width: 210px;
+        .decor-line.line1 {
+            bottom: 84px;
         }
 
-        .cream-drops.middle {
-            bottom: 114px;
-            width: 150px;
-            gap: 9px;
+        .decor-line.line2 {
+            bottom: 62px;
+            width: 170px;
         }
 
-        .cream-drops span {
-            display: block;
-            width: 15px;
-            background: linear-gradient(180deg, #fffafc 0%, #ffd9e7 100%);
-            border-radius: 0 0 12px 12px;
-            box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.06);
-        }
-
-        .cream-drops span:nth-child(1) {
-            height: 28px;
-        }
-
-        .cream-drops span:nth-child(2) {
-            height: 20px;
-        }
-
-        .cream-drops span:nth-child(3) {
-            height: 33px;
-        }
-
-        .cream-drops span:nth-child(4) {
-            height: 24px;
-        }
-
-        .cream-drops span:nth-child(5) {
-            height: 30px;
-        }
-
-        .cream-drops span:nth-child(6) {
-            height: 18px;
-        }
-
-        .frosting-swirl {
+        .frosting {
             position: absolute;
-            width: 28px;
-            height: 24px;
+            width: 30px;
+            height: 22px;
             border-radius: 50%;
-            background:
-                radial-gradient(circle at 50% 38%, #ffffff 0%, #fff5fb 62%, #ffe3ef 100%);
-            box-shadow:
-                inset 0 -4px 6px rgba(0, 0, 0, 0.04),
-                0 4px 7px rgba(0, 0, 0, 0.08);
+            background: radial-gradient(circle at 50% 35%, #ffffff 0%, #fff2f8 75%, #ffdce8 100%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
             z-index: 6;
         }
 
-        .frosting-swirl::after {
+        .frosting::after {
             content: "";
             position: absolute;
             left: 50%;
-            top: -6px;
+            top: -5px;
             transform: translateX(-50%);
             width: 14px;
-            height: 12px;
+            height: 10px;
             border-radius: 50%;
-            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #fff1f8 100%);
+            background: #fff;
         }
 
-        .sw1 {
-            left: 26px;
-            bottom: 97px;
+        .f1 {
+            left: 38px;
+            bottom: 118px;
         }
 
-        .sw2 {
-            left: 78px;
-            bottom: 104px;
+        .f2 {
+            left: 86px;
+            bottom: 124px;
         }
 
-        .sw3 {
-            right: 78px;
-            bottom: 104px;
+        .f3 {
+            right: 86px;
+            bottom: 124px;
         }
 
-        .sw4 {
-            right: 26px;
-            bottom: 97px;
+        .f4 {
+            right: 38px;
+            bottom: 118px;
         }
 
         .berry {
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            background:
-                radial-gradient(circle at 35% 35%, #ffb2c2 0%, #ff4f7b 40%, #cc1848 100%);
+            background: radial-gradient(circle at 35% 35%, #ffb6c7 0%, #ff4f7c 42%, #cb1749 100%);
             box-shadow:
                 inset -2px -3px 4px rgba(0, 0, 0, 0.15),
-                0 3px 8px rgba(0, 0, 0, 0.15);
+                0 3px 8px rgba(0, 0, 0, 0.14);
             z-index: 7;
         }
 
@@ -361,94 +368,134 @@
             position: absolute;
             top: -4px;
             left: 4px;
-            width: 8px;
+            width: 9px;
             height: 6px;
-            background: #74c365;
+            background: #72c166;
             border-radius: 50% 50% 0 50%;
             transform: rotate(-18deg);
         }
 
         .b1 {
-            left: 52px;
-            bottom: 113px;
+            left: 58px;
+            bottom: 136px;
         }
 
         .b2 {
-            left: 112px;
-            bottom: 122px;
+            left: 120px;
+            bottom: 140px;
         }
 
         .b3 {
-            right: 112px;
-            bottom: 122px;
+            right: 120px;
+            bottom: 140px;
         }
 
         .b4 {
-            right: 52px;
-            bottom: 113px;
+            right: 58px;
+            bottom: 136px;
         }
 
         .gold-beads {
             position: absolute;
             left: 50%;
-            bottom: 84px;
+            bottom: 122px;
             transform: translateX(-50%);
-            width: 210px;
+            width: 180px;
             display: flex;
             justify-content: space-between;
-            z-index: 8;
+            z-index: 7;
         }
 
         .gold-beads span {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #fff1a5 0%, #f7c84e 55%, #c8921d 100%);
-            box-shadow: 0 0 6px rgba(255, 210, 80, 0.4);
+            background: radial-gradient(circle at 35% 35%, #fff4ad 0%, #f7cb4b 55%, #c7921a 100%);
+            box-shadow: 0 0 5px rgba(255, 210, 80, 0.38);
         }
 
+        /* 3D candles */
         .candle-row {
             position: absolute;
             left: 50%;
-            bottom: 142px;
+            bottom: 148px;
             transform: translateX(-50%);
-            width: 122px;
+            width: 126px;
             display: flex;
             justify-content: space-between;
-            z-index: 12;
+            z-index: 20;
         }
 
         .candle {
             position: relative;
-            width: 14px;
-            height: 56px;
+            width: 18px;
+            height: 64px;
+            transform-style: preserve-3d;
+            perspective: 600px;
+        }
+
+        .candle-body {
+            position: absolute;
+            inset: 0;
             border-radius: 8px;
             background:
-                repeating-linear-gradient(45deg,
-                    #ffffff 0 7px,
-                    #ff6a96 7px 14px);
+                linear-gradient(90deg,
+                    #ff5f95 0%,
+                    #ffffff 18%,
+                    #ff77a5 32%,
+                    #ffffff 48%,
+                    #ff6a97 64%,
+                    #ffffff 82%,
+                    #ea4c82 100%);
             box-shadow:
-                0 6px 12px rgba(0, 0, 0, 0.18),
-                inset -2px -4px 5px rgba(0, 0, 0, 0.10),
-                inset 2px 2px 4px rgba(255, 255, 255, 0.4);
+                0 8px 16px rgba(0, 0, 0, 0.22),
+                inset -3px 0 4px rgba(0, 0, 0, 0.12),
+                inset 3px 0 5px rgba(255, 255, 255, 0.4);
+            transform: rotateY(-10deg);
+        }
+
+        .candle-side {
+            position: absolute;
+            top: 3px;
+            right: -4px;
+            width: 8px;
+            height: 58px;
+            border-radius: 0 6px 6px 0;
+            background: linear-gradient(180deg, #d93e73 0%, #b02b59 100%);
+            opacity: 0.7;
+            transform: skewY(-8deg);
+            filter: brightness(0.95);
+        }
+
+        .candle-top {
+            position: absolute;
+            left: 50%;
+            top: -4px;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 8px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 45%, #fffdfd 0%, #ffd9e7 78%, #e088a8 100%);
+            box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.12);
+            z-index: 3;
         }
 
         .wick {
             position: absolute;
             left: 50%;
-            top: -9px;
+            top: -11px;
             width: 2px;
-            height: 11px;
+            height: 12px;
             transform: translateX(-50%);
             background: #3a2b1d;
             border-radius: 2px;
-            z-index: 2;
+            z-index: 4;
         }
 
         .flame {
             position: absolute;
             left: 50%;
-            top: -32px;
+            top: -34px;
             width: 20px;
             height: 30px;
             transform: translateX(-50%);
@@ -461,7 +508,7 @@
                 0 0 44px rgba(255, 120, 30, 0.38);
             animation: flicker 0.14s infinite alternate;
             transform-origin: center bottom;
-            z-index: 3;
+            z-index: 6;
         }
 
         .flame::after {
@@ -498,6 +545,7 @@
             transform: translateX(-50%);
             opacity: 0;
             pointer-events: none;
+            z-index: 7;
         }
 
         .smoke::before,
@@ -533,7 +581,7 @@
             background: radial-gradient(circle, rgba(255, 235, 140, 0.8) 0%, rgba(255, 180, 60, 0.12) 55%, transparent 75%);
             opacity: 0;
             pointer-events: none;
-            z-index: 1;
+            z-index: 5;
         }
 
         .candle.out .flame {
@@ -552,7 +600,6 @@
             animation:
                 relightGrow 1s ease-out,
                 flicker 0.14s infinite alternate 1s;
-            transform-origin: center bottom;
         }
 
         @keyframes smokeRise {
@@ -599,39 +646,6 @@
                 opacity: 1;
                 transform: translateX(-50%) scale(1);
             }
-        }
-
-        .message {
-            position: absolute;
-            left: 50%;
-            top: 28px;
-            transform: translateX(-50%) translateY(-10px);
-            width: 92%;
-            text-align: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.8s ease;
-            z-index: 20;
-        }
-
-        .message.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .message h2 {
-            margin: 0 0 8px;
-            font-size: clamp(30px, 7vw, 48px);
-            color: #fff7b0;
-            text-shadow:
-                0 0 12px rgba(255, 230, 110, 0.52),
-                0 0 28px rgba(255, 185, 70, 0.28);
-        }
-
-        .message p {
-            margin: 0;
-            font-size: clamp(14px, 4vw, 20px);
-            color: rgba(255, 255, 255, 0.96);
         }
 
         .controls {
@@ -719,7 +733,7 @@
             inset: 0;
             pointer-events: none;
             overflow: hidden;
-            z-index: 19;
+            z-index: 39;
         }
 
         .confetti span {
@@ -765,8 +779,7 @@
 
         .card {
             width: min(92vw, 420px);
-            background:
-                linear-gradient(180deg, #fffaf4 0%, #fff2f8 100%);
+            background: linear-gradient(180deg, #fffaf4 0%, #fff2f8 100%);
             color: #7b3551;
             border-radius: 26px;
             padding: 26px 22px 20px;
@@ -832,12 +845,8 @@
 
         @media (max-width: 420px) {
             .cake {
-                transform: translateX(-50%) scale(0.93);
+                transform: translateX(-50%) scale(0.92);
                 transform-origin: center bottom;
-            }
-
-            .plate {
-                transform: translateX(-50%) scale(0.94);
             }
 
             .card-lines p {
@@ -854,22 +863,20 @@
 
         <div class="card-overlay" id="cardOverlay">
             <div class="card">
-                <h3>To o泡生日贺卡💌</h3>
+                <h3>生日贺卡 💌</h3>
                 <div class="card-lines">
-                    <p>来自04的生日小惊喜😘</p>
-                    <p>没想到还有贺卡吧😎</p>
-                    <p>阳历的在忙就农历补上了</p>
-                    <p>这是第一年陪你过生日，接下来还有第二年...</p>
-                    <p>摊上我你就偷着乐吧😉</p>
+                    <p>愿你今天被温柔和快乐包围</p>
+                    <p>愿你所有期待都慢慢实现</p>
+                    <p>愿你每天都有小惊喜和好运气</p>
                     <p>祝你生日快乐，永远闪闪发光 ✨</p>
                 </div>
-                <button class="card-close" id="closeCardBtn">关闭贺卡</button>
+                <button class="card-close" id="closeCardBtn">读完了，关闭贺卡</button>
             </div>
         </div>
 
         <div class="content">
             <div class="top">
-                <h1 class="title">生日快乐 o泡🎂</h1>
+                <h1 class="title">生日快乐 🎂</h1>
                 <p class="subtitle">点开始后，对着手机吹气，把蜡烛吹灭吧</p>
             </div>
 
@@ -880,28 +887,23 @@
                 </div>
 
                 <div class="scene">
-                    <div class="glow-shadow"></div>
-                    <div class="plate"></div>
+                    <div class="table-shadow"></div>
 
                     <div class="cake" id="cake">
                         <div class="cake-click-area" id="cakeClickArea"></div>
 
-                        <div class="cake-bottom"></div>
-                        <div class="top-cream bottom"></div>
-                        <div class="cream-drops bottom">
-                            <span></span><span></span><span></span><span></span><span></span><span></span>
-                        </div>
+                        <div class="plate"></div>
+                        <div class="cake-base"></div>
+                        <div class="cake-top"></div>
+                        <div class="cream-wave"></div>
 
-                        <div class="cake-middle"></div>
-                        <div class="top-cream middle"></div>
-                        <div class="cream-drops middle">
-                            <span></span><span></span><span></span><span></span><span></span>
-                        </div>
+                        <div class="decor-line line1"></div>
+                        <div class="decor-line line2"></div>
 
-                        <div class="frosting-swirl sw1"></div>
-                        <div class="frosting-swirl sw2"></div>
-                        <div class="frosting-swirl sw3"></div>
-                        <div class="frosting-swirl sw4"></div>
+                        <div class="frosting f1"></div>
+                        <div class="frosting f2"></div>
+                        <div class="frosting f3"></div>
+                        <div class="frosting f4"></div>
 
                         <div class="berry b1"></div>
                         <div class="berry b2"></div>
@@ -915,18 +917,27 @@
 
                         <div class="candle-row" id="candles">
                             <div class="candle">
+                                <div class="candle-body"></div>
+                                <div class="candle-side"></div>
+                                <div class="candle-top"></div>
                                 <div class="wick"></div>
                                 <div class="spark"></div>
                                 <div class="flame"></div>
                                 <div class="smoke"></div>
                             </div>
                             <div class="candle">
+                                <div class="candle-body"></div>
+                                <div class="candle-side"></div>
+                                <div class="candle-top"></div>
                                 <div class="wick"></div>
                                 <div class="spark"></div>
                                 <div class="flame"></div>
                                 <div class="smoke"></div>
                             </div>
                             <div class="candle">
+                                <div class="candle-body"></div>
+                                <div class="candle-side"></div>
+                                <div class="candle-top"></div>
                                 <div class="wick"></div>
                                 <div class="spark"></div>
                                 <div class="flame"></div>
@@ -951,7 +962,7 @@
                     先点击“开始麦克风”，允许权限后，再对手机吹气。
                 </div>
 
-                <div class="hint">吹灭蜡烛后，点击蛋糕就会弹出贺卡；重新点燃并再吹灭后也能再次打开。</div>
+                <div class="hint">吹灭蜡烛后，点击蛋糕会弹出贺卡；重新点燃并再吹灭后也能再次打开。</div>
             </div>
         </div>
     </div>
